@@ -1,0 +1,106 @@
+<!-- templates/result.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Result</title>
+    <style>
+        /* General body styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('https://images.unsplash.com/photo-1603052872634-b47742ab289d'); /* Background image from Unsplash */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+            height: 100vh; /* Make sure it covers the entire screen */
+            color: #333;
+        }
+
+        /* Header styles */
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            color: #fff;
+            margin-top: 20px;
+            font-weight: 700;
+        }
+
+        /* Result container styles */
+        .result-container {
+            text-align: center;
+            margin-top: 50px;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background to enhance readability */
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .result-container p {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .result-container img {
+            margin-top: 20px;
+            max-width: 300px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Link to go back to home page */
+        .result-container a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #0099cc;
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        .result-container a:hover {
+            background-color: #007bb5;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 10px;
+            background-color: #003366;
+            color: white;
+        }
+
+        footer p {
+            font-size: 14px;
+        }
+
+        /* Media query for responsiveness on mobile */
+        @media (max-width: 768px) {
+            .result-container img {
+                max-width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="result-container">
+        <h1>Prediction Result</h1>
+        <p>Prediction: {{ prediction }}</p>
+        <img src="{{ image_path }}" alt="Uploaded Image">
+        <a href="/">Try another image</a>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Oral Cancer Detection System | Developed by Your Name</p>
+    </footer>
+
+</body>
+</html>

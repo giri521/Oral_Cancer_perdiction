@@ -1,0 +1,107 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oral Cancer Detection</title>
+    <style>
+        /* General body styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('https://images.unsplash.com/photo-1603052872634-b47742ab289d'); /* Background image from Unsplash */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+            height: 100vh; /* Make sure it covers the entire screen */
+            color: #333;
+        }
+
+        /* Header styles */
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            color: #fff;
+            margin-top: 20px;
+            font-weight: 700;
+        }
+
+        /* Form container styles */
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 40px;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background to enhance readability */
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        input[type="file"] {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            margin-bottom: 20px;
+            font-size: 16px;
+            width: 60%;
+            cursor: pointer;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            text-align: center;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 60%;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 10px;
+            background-color: #003366;
+            color: white;
+        }
+
+        footer p {
+            font-size: 14px;
+        }
+
+        /* Media query for responsiveness on mobile */
+        @media (max-width: 768px) {
+            form {
+                width: 100%;
+            }
+
+            input[type="file"], button {
+                width: 80%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Oral Cancer Detection System</h1>
+
+    <form action="/" method="POST" enctype="multipart/form-data">
+        <label for="file">Upload an image:</label>
+        <input type="file" name="file" required>
+        <button type="submit">Predict</button>
+    </form>
+
+</body>
+</html>
