@@ -6,6 +6,3 @@ services:
     plan: free
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn app:app
-    envVars:
-      - key: MODEL_PATH
-        value: model.h5
