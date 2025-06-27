@@ -1,52 +1,63 @@
-# app.py
 from flask import Flask, render_template, request
 import tensorflow as tf
 from tensorflow.keras.preprocessing import image
 import numpy as np
 import os
+import uuid
+import gdown
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
-# Load the saved model
-model = tf.keras.models.load_model('oral_cancer_detection_model.h5')
+# Model path and download from Google Drive if missing
+model_path = 'oral_cancer_detection_model.h5'
+google_drive_file_id = '1EhG7tzuXJzPHxTbneFs8PTINjuvxaexx'
 
-# Create static directory if it doesn't exist
+if not os.path.exists(model_path):
+    print("[INFO] Downloading model from Google Drive...")
+    url = f'https://drive.google.com/uc?id={google_drive_file_id}'
+    gdown.download(url, model_path, quiet=False)
+    print("[INFO] Model downloaded successfully.")
+
+# Load the trained model
+model = tf.keras.models.load_model(model_path)
+print("[INFO] Model loaded.")
+
+# Ensure 'static' folder exists to save uploaded images
 if not os.path.exists('static'):
     os.makedirs('static')
 
 # Prediction function
 def predict_image(img_path):
-    # Load and preprocess the image
-    img = image.load_img(img_path, target_size=(128, 128))  # Resize image to 128x128
+    img = image.load_img(img_path, target_size=(128, 128))
     img_array = image.img_to_array(img)
-    img_array = np.expand_dims(img_array, axis=0) / 255.0  # Normalize the image
-    
-    # Get model prediction
-    prediction = model.predict(img_array)
-    
-    # If the prediction is greater than 0.5, it's "No Oral Cancer", otherwise "Oral Cancer Detected"
-    if prediction[0] > 0.5:
-        return "No Oral Cancer"  # Change this to what your model should output for "No Cancer"
-    else:
-        return "Oral Cancer Detected"  # This will be for cases where cancer is detected
+    img_array = np.expand_dims(img_array, axis=0) / 255.0
 
+    prediction = model.predict(img_array)[0][0]
+
+    if prediction > 0.5:
+        return "No Oral Cancer", float(prediction)
+    else:
+        return "Oral Cancer Detected", float(prediction)
+
+# Home route
 @app.route("/", methods=["GET", "POST"])
 def home():
     if request.method == "POST":
-        # Check if file is uploaded
-        file = request.files["file"]
+        file = request.files.get("file")
         if file:
-            # Save the uploaded file to the 'static' folder
-            file_path = f"static/{file.filename}"
+            filename = secure_filename(file.filename)
+            unique_name = f"{uuid.uuid4().hex}_{filename}"
+            file_path = os.path.join("static", unique_name)
             file.save(file_path)
 
-            # Get the prediction result
-            result = predict_image(file_path)
+            result, confidence = predict_image(file_path)
 
-            # Render the result page with the prediction and image
-            return render_template("result.html", prediction=result, image_path=file_path)
+            return render_template("result.html",
+                                   prediction=result,
+                                   confidence=round(confidence * 100, 2),
+                                   image_path=file_path)
 
-    # Render the main upload page
     return render_template("index.html")
 
 if __name__ == "__main__":
